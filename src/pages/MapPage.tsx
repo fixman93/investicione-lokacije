@@ -354,7 +354,10 @@ export default function MapPage() {
           <ListItem key={l.id} disablePadding>
             <ListItemButton
               selected={selected?.id === l.id}
-              onClick={() => setSelected(l)}
+              onClick={() => {
+                setSelected(l);
+                if (isMobile) setDrawerOpen(false); // ✅ zatvori drawer ako je mobilni
+              }}
             >
               <ListItemText
                 primary={l.name}
