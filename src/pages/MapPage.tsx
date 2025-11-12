@@ -472,8 +472,31 @@ export default function MapPage() {
               p: 1,
             }}
           >
-            <CardContent>
-              <Typography variant="h6">{selected.name}</Typography>
+            <CardContent sx={{ position: "relative", pb: 3 }}>
+              {/* 🔹 Close ikonica */}
+              <IconButton
+                onClick={() => setSelected(null)}
+                sx={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                  color: "rgba(0,0,0,0.6)",
+                  backgroundColor: "rgba(255,255,255,0.6)",
+                  "&:hover": { backgroundColor: "#f1f5f9" },
+                  width: 32,
+                  height: 32,
+                }}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+
+              <Typography
+                variant="h6"
+                sx={{ pr: 4, fontWeight: 600, color: "#222" }}
+              >
+                {selected.name}
+              </Typography>
+
               <Divider sx={{ my: 1 }} />
               <Typography variant="body2" color="text.secondary">
                 {selected.description}
