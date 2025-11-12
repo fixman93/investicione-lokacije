@@ -243,13 +243,28 @@ export default function MapPage() {
       }
     });
 
-    // 🖱️ Klik na feature na mapi
+    // 🖱️ Klik na mapu
     map.on("singleclick", (evt) => {
+      let clickedLocation = null;
+
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
         const id = feature.get("id");
         const loc = LOCATIONS.find((l) => l.id === id);
-        if (loc) setSelected(loc);
+        if (loc) clickedLocation = loc;
       });
+
+      // Ako kliknemo istu lokaciju ponovo → odselektuj
+      if (clickedLocation && selected?.id === clickedLocation.id) {
+        setSelected(null);
+      }
+      // Ako kliknemo drugu → selektuj novu
+      else if (clickedLocation) {
+        setSelected(clickedLocation);
+      }
+      // Ako kliknemo prazno → odselektuj
+      else {
+        setSelected(null);
+      }
     });
 
     return () => map.setTarget(undefined);
