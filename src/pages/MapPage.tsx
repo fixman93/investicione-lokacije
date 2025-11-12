@@ -347,31 +347,24 @@ export default function MapPage() {
 
   // 📋 Lista lokacija
   const LocationList = (
-    <Box sx={{ width: isMobile ? "100vw" : 350, p: 2 }}>
-      {/* <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
-        <Typography variant="h6">Lokacije</Typography>
-        {isMobile && (
-          <IconButton onClick={() => setDrawerOpen(false)}>
-            <CloseIcon />
-          </IconButton>
-        )}
-      </Box> */}
-      {/* <Divider sx={{ mb: 1 }} /> */}
+    <Box
+      sx={{
+        width: isMobile ? "100%" : 350, // 🔹 umjesto 100vw
+        p: 2,
+        boxSizing: "border-box", // 🔹 sprečava prelazak širine
+        overflowX: "hidden", // 🔹 isključuje horizontalni scroll
+      }}
+    >
       <List>
         {LOCATIONS.map((l) => (
           <ListItem key={l.id} disablePadding>
             <ListItemButton
               selected={selected?.id === l.id}
               onClick={() => {
-                setSelected(l);
-                if (isMobile) setDrawerOpen(false); // ✅ zatvori drawer ako je mobilni
+                // ako klikne istu — deselektuj
+                if (selected?.id === l.id) setSelected(null);
+                else setSelected(l);
+                if (isMobile) setDrawerOpen(false);
               }}
             >
               <ListItemText
@@ -384,6 +377,7 @@ export default function MapPage() {
       </List>
     </Box>
   );
+
   return (
     <Box
       sx={{
