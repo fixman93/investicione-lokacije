@@ -333,7 +333,7 @@ export default function MapPage() {
   // 📋 Lista lokacija
   const LocationList = (
     <Box sx={{ width: isMobile ? "100vw" : 350, p: 2 }}>
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
@@ -347,8 +347,8 @@ export default function MapPage() {
             <CloseIcon />
           </IconButton>
         )}
-      </Box>
-      <Divider sx={{ mb: 1 }} />
+      </Box> */}
+      {/* <Divider sx={{ mb: 1 }} /> */}
       <List>
         {LOCATIONS.map((l) => (
           <ListItem key={l.id} disablePadding>
@@ -366,9 +366,14 @@ export default function MapPage() {
       </List>
     </Box>
   );
-
   return (
-    <Box sx={{ display: "flex", height: "calc(100vh - 70px)" }}>
+    <Box
+      sx={{
+        display: "flex",
+        height: "calc(100vh - 70px)",
+        position: "relative",
+      }}
+    >
       {!isMobile && (
         <Box
           sx={{
@@ -383,21 +388,32 @@ export default function MapPage() {
       )}
 
       <Box sx={{ flex: 1, position: "relative" }}>
+        {/* 🧭 Meni ikonica — UVIJEK vidljiva */}
         {isMobile && (
           <IconButton
             onClick={() => setDrawerOpen(true)}
             sx={{
-              position: "absolute",
-              top: 16,
-              left: 16,
-              zIndex: 5,
+              position: "fixed",
+              top: 60,
+              right: 16,
+              zIndex: 50,
               backgroundColor: "white",
-              boxShadow: 2,
+              boxShadow: 3,
+              borderRadius: "50%",
+              width: 46,
+              height: 46,
+              transition: "all 0.3s ease",
+              "&:hover": {
+                backgroundColor: "#f1f5f9",
+                transform: "scale(1.05)",
+              },
             }}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ color: "#1565c0" }} />
           </IconButton>
         )}
+
+        {/* 🗺️ Tooltip */}
         <div
           ref={tooltipRef}
           style={{
@@ -414,8 +430,9 @@ export default function MapPage() {
             display: "none",
             zIndex: 20,
           }}
-        ></div>
+        />
 
+        {/* 🌍 Mapa */}
         <div
           ref={mapRef}
           style={{
@@ -426,6 +443,7 @@ export default function MapPage() {
           }}
         />
 
+        {/* 🏷️ Info Card */}
         {selected && (
           <Card
             sx={{
@@ -434,11 +452,12 @@ export default function MapPage() {
               top: isMobile ? "auto" : 20,
               left: isMobile ? 0 : "auto",
               right: isMobile ? 0 : 20,
-              width: isMobile ? "100%" : 300,
+              width: isMobile ? "100%" : 320,
               borderRadius: isMobile ? "20px 20px 0 0" : 2,
               boxShadow: 6,
               backgroundColor: "#fff",
-              zIndex: 10,
+              zIndex: 30,
+              p: 1,
             }}
           >
             <CardContent>
@@ -457,19 +476,64 @@ export default function MapPage() {
           </Card>
         )}
 
+        {/* 📱 Modern Drawer */}
         <Drawer
           anchor="bottom"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
+          transitionDuration={400}
           PaperProps={{
             sx: {
-              borderTopLeftRadius: "16px",
-              borderTopRightRadius: "16px",
-              height: "60%",
+              borderTopLeftRadius: "24px",
+              borderTopRightRadius: "24px",
+              height: "70%",
+              background: "rgba(255,255,255,0.85)",
+              backdropFilter: "blur(12px)",
+              boxShadow: "0 -2px 20px rgba(0,0,0,0.1)",
+              overflow: "hidden",
+              position: "relative",
             },
           }}
         >
-          {LocationList}
+          {/* Grab handle i naslov */}
+          <Box
+            sx={{
+              textAlign: "center",
+              position: "relative",
+              py: 2,
+              borderBottom: "1px solid rgba(0,0,0,0.1)",
+            }}
+          >
+            <Box
+              sx={{
+                width: 40,
+                height: 4,
+                borderRadius: 2,
+                backgroundColor: "rgba(0,0,0,0.2)",
+                mx: "auto",
+                mb: 1,
+              }}
+            />
+            <Typography variant="h6">Dostupne lokacije</Typography>
+
+            {/* Close button fiksiran u gornji desni ugao */}
+            <IconButton
+              onClick={() => setDrawerOpen(false)}
+              sx={{
+                position: "absolute",
+                right: 10,
+                top: 10,
+                color: "rgba(0,0,0,0.6)",
+                backgroundColor: "rgba(255,255,255,0.6)",
+                "&:hover": { backgroundColor: "#f1f5f9" },
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          {/* Lista unutar drawer-a */}
+          <Box sx={{ overflowY: "auto", height: "100%" }}>{LocationList}</Box>
         </Drawer>
       </Box>
     </Box>
