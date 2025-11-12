@@ -245,7 +245,7 @@ export default function MapPage() {
 
     // 🖱️ Klik na mapu
     map.on("singleclick", (evt) => {
-      let clickedLocation = null;
+      let clickedLocation: any = null;
 
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
         const id = feature.get("id");
